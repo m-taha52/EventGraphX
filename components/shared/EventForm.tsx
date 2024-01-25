@@ -8,6 +8,7 @@ import { Input } from "@/components/ui/input"
 import { eventFormSchema } from "@/lib/validator"
 import Dropdown from "./Dropdown"
 import { Textarea } from "../ui/textarea"
+import { eventDefaultValues } from "@/constants"
 
 type EventFormProps = {
     userId: string
@@ -16,8 +17,11 @@ type EventFormProps = {
 
 const EventForm = ({ userId, type}: EventFormProps) => {
 
+  const initialValues = eventDefaultValues;
+
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
+    defaultValues: initialValues,
   })
  
   // 2. Define a submit handler.
