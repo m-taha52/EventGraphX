@@ -8,7 +8,9 @@ import { Input } from "@/components/ui/input"
 import { eventFormSchema } from "@/lib/validator"
 import Dropdown from "./Dropdown"
 import { Textarea } from "../ui/textarea"
+import { FileUploader } from "./FileUploader"
 import { eventDefaultValues } from "@/constants"
+import { useState } from "react"
 
 type EventFormProps = {
     userId: string
@@ -18,6 +20,7 @@ type EventFormProps = {
 const EventForm = ({ userId, type}: EventFormProps) => {
 
   const initialValues = eventDefaultValues;
+  const [files, setFiles] = useState<File[]>([])
 
   const form = useForm<z.infer<typeof eventFormSchema>>({
     resolver: zodResolver(eventFormSchema),
@@ -72,6 +75,23 @@ const EventForm = ({ userId, type}: EventFormProps) => {
             <FormItem className="w-full">
               <FormControl className="h-72">
                 <Textarea placeholder="Description" {...field} className="textarea rounded-2xl"/>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+      <FormField
+          control={form.control}
+          name="imageUrl"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormControl className="h-72">
+                  <FileUploader
+                  onFieldChange={field.onChange}
+                  imageUrl={field.value}
+                  setFiles={setFiles}
+                  />
               </FormControl>
               <FormMessage />
             </FormItem>
