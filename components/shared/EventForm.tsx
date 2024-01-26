@@ -132,6 +132,7 @@ const EventForm = ({ userId, type}: EventFormProps) => {
 
       <div className="flex flex-col gap-5 md:flex-row">
 
+            {/* Child 1 */}
       <FormField
           control={form.control}
           name="startDateTime"
@@ -162,8 +163,40 @@ const EventForm = ({ userId, type}: EventFormProps) => {
           )}
         />
 
-      </div>
 
+            {/* Child 2 */}
+
+      <FormField
+          control={form.control}
+          name="endDateTime"
+          render={({ field }) => (
+            <FormItem className="w-full">
+              <FormControl>
+                <div className="flex-center h-[54px] w-full overflow-hidden rounded-full bg-gray-50 px-4 py-2">
+                  <Image 
+                  src="/assets/icons/calendar.svg"
+                  alt="location" 
+                  width={24}
+                  height={24}
+                  className="filter-grey"
+                  />
+                  <p className="ml-3 whitespace-nowrap text-gray-600"> End Date: </p>
+                  <DatePicker selected={field.value} onChange={(date: Date) => field.onChange(date)} 
+                  showTimeSelect 
+                  timeInputLabel="Time: "
+                  dateFormat="/dd/MM/yyyy h:mm:aa"
+                  wrapperClassName="datePicker"
+                  />
+
+           
+                </div>
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+      </div>
 
         <Button type="submit">Submit</Button>
       </form>
