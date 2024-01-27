@@ -7,6 +7,7 @@ import {
     AlertDialog,AlertDialogAction,AlertDialogCancel,AlertDialogContent,AlertDialogDescription,AlertDialogFooter,AlertDialogHeader,AlertDialogTitle,AlertDialogTrigger,
   } from "@/components/ui/alert-dialog"
 import { Input } from '../ui/input'
+import { createCategory } from '@/lib/actions/category.actions'
   
 
   
@@ -20,7 +21,17 @@ const Dropdown = ({value, onChangeHandler}: DropdownProps) => {
     const [categories, setCategories] = useState<ICategory[]>([
     ])
     const [newCategory, setnewCategory] = useState('');
-    const handleAddCategory = () => {}
+
+    const handleAddCategory = () => {
+        createCategory({
+            categoryName: newCategory.trim()
+        })
+        .then((category) => {
+            setCategories((prevState) => [...prevState, category])
+        })
+    }
+
+    
 
   return (
         <Select onValueChange={onChangeHandler} defaultValue={value}>
