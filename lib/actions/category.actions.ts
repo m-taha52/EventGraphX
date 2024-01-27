@@ -17,3 +17,17 @@ export const createCategory = async ({categoryName}: CreateCategoryParams) =>
         handleError(error)
     }
 }
+
+export const getAllCategory = async ({categoryName}: CreateCategoryParams) =>
+{
+    try {
+        await connectToDatabase();
+
+        const categories = await Category.find()
+        return JSON.parse(JSON.stringify(categories));
+
+    } catch(error)
+    {
+        handleError(error)
+    }
+}
