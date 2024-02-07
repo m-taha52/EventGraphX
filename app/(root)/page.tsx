@@ -36,9 +36,9 @@ export default function Home() {
         <Collection 
         data={[]}
         emptyTitle="No Events Found"
-        emotyStateSubtext="Come back Later"
+        emptyStateSubtext="Come back Later"
         collectionType='All_Events'
-        limit={6}
+        Limit={6}
         page={1}
         totalPages={2}
         />
