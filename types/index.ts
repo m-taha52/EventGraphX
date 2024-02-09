@@ -49,3 +49,8 @@ export type GetAllEventsParams = {
   limit: number
   page: number
 }
+
+export type DeleteEventParams = {
+  eventId: string
+  path: string
+}
