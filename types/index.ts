@@ -112,3 +112,9 @@ export type GetOrdersByEventParams = {
   eventId: string
   searchString: string
 }
+
+export type UrlQueryParams = {
+  params: string
+  key: string
+  value: string | null
+}
