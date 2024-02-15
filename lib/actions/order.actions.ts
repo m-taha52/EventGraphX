@@ -7,6 +7,8 @@ import { handleError } from "../utils";
 import Order from "../database/models/order.model";
 import Event from "../database/models/event.model";
 import User from "../database/models/user.model";
+import { ObjectId } from "mongodb";
+
 
 export const checkoutOrder = async (order: CheckoutOrderParams) =>
 {
@@ -83,6 +85,62 @@ export async function getOrdersByUser({ userId, limit = 3, page }: GetOrdersByUs
     const ordersCount = await Order.distinct('event._id').countDocuments(conditions)
 
     return { data: JSON.parse(JSON.stringify(orders)), totalPages: Math.ceil(ordersCount / limit) }
+  } catch (error) {
+    handleError(error)
+  }
+}
+
+
+export async function getOrdersByEvent({ searchString, eventId }: GetOrdersByEventParams) {
+  try {
+    await connectToDatabase()
+
+    if (!eventId) throw new Error('Event ID is required')
+    const eventObjectId = new ObjectId(eventId)
+
+    const orders = await Order.aggregate([
+      {
+        $lookup: {
+          from: 'users',
+          localField: 'buyer',
+          foreignField: '_id',
+          as: 'buyer',
+        },
+      },
+      {
+        $unwind: '$buyer',
+      },
+      {
+        $lookup: {
+          from: 'events',
+          localField: 'event',
+          foreignField: '_id',
+          as: 'event',
+        },
+      },
+      {
+        $unwind: '$event',
+      },
+      {
+        $project: {
+          _id: 1,
+          totalAmount: 1,
+          createdAt: 1,
+          eventTitle: '$event.title',
+          eventId: '$event._id',
+          buyer: {
+            $concat: ['$buyer.firstName', ' ', '$buyer.lastName'],
+          },
+        },
+      },
+      {
+        $match: {
+          $and: [{ eventId: eventObjectId }, { buyer: { $regex: RegExp(searchString, 'i') } }],
+        },
+      },
+    ])
+
+    return JSON.parse(JSON.stringify(orders))
   } catch (error) {
     handleError(error)
   }
