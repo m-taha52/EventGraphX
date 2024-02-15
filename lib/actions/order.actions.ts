@@ -1,6 +1,6 @@
 'use server'
 import Stripe  from "stripe";
-import { CheckoutOrderParams, CreateOrderParams, GetOrdersByUserParams } from "@/types"
+import { CheckoutOrderParams, CreateOrderParams, GetOrdersByEventParams, GetOrdersByUserParams } from "@/types"
 import { redirect } from 'next/navigation';
 import { connectToDatabase } from "../database";
 import { handleError } from "../utils";
